@@ -1,0 +1,97 @@
+# Documentation API Contract
+
+## Purpose
+This contract defines potential API endpoints for future functionality such as search, citation management, or user progress tracking. Currently, the system is a static documentation site, but this contract allows for future extensibility.
+
+## Base URL
+`/api/v1/`
+
+## Endpoints
+
+### GET /search
+**Description**: Search across all modules and chapters
+**Parameters**:
+- `q` (string, required): Search query
+- `limit` (number, optional): Number of results (default: 10)
+- `module` (string, optional): Filter by specific module
+
+**Response**:
+```json
+{
+  "results": [
+    {
+      "id": "string",
+      "title": "string",
+      "content_preview": "string",
+      "url": "string",
+      "module": "string",
+      "chapter": "string",
+      "relevance_score": "number"
+    }
+  ],
+  "total": "number",
+  "page": "number"
+}
+```
+
+### GET /citations
+**Description**: Retrieve all citations by module
+**Parameters**:
+- `module` (string, optional): Filter by specific module
+- `year` (number, optional): Filter by publication year
+
+**Response**:
+```json
+{
+  "citations": [
+    {
+      "id": "string",
+      "type": "string",
+      "authors": ["string"],
+      "title": "string",
+      "journal": "string",
+      "year": "number",
+      "doi": "string",
+      "url": "string",
+      "accessDate": "string"
+    }
+  ]
+}
+```
+
+### GET /progress
+**Description**: Track user progress through modules (if authentication is added later)
+**Parameters**: None (requires authentication)
+
+**Response**:
+```json
+{
+  "user_id": "string",
+  "completed_modules": ["string"],
+  "completed_chapters": ["string"],
+  "current_position": {
+    "module": "string",
+    "chapter": "string"
+  },
+  "completion_percentage": "number"
+}
+```
+
+## Error Responses
+All endpoints return standard error format:
+```json
+{
+  "error": {
+    "code": "string",
+    "message": "string",
+    "details": "object"
+  }
+}
+```
+
+## Status Codes
+- 200: Success
+- 400: Bad Request
+- 401: Unauthorized (if authentication required)
+- 404: Not Found
+- 500: Internal Server Error
